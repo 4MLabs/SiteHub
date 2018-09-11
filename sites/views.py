@@ -5,7 +5,23 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse
-from . models import Site
+
+from rest_framework.response import Response
+
+from sites.serializers import (
+    UserSerializer,
+    CategorySerializer,
+    SiteSerializer,
+)
+from utils.views import (
+    OpenAPIView,
+    ProtectedAPIView,
+    AdminAPIView,
+)
+from . models import (
+    Site,
+    Category,
+)
 
 
 class IndexView(TemplateView):
@@ -80,3 +96,17 @@ class LogoutView(RedirectView):
     def get(self, request, *arg, **kwargs):
         logout(request)
         return super(LogoutView, self).get(request, *arg, **kwargs)
+
+
+class APICategoryView(OpenAPIView):
+    def get(self, request, *args, **kwargs):
+        category_request = Category.objects.filter()
+        serializer = CategorySerializer(category_request, many=True)
+        return Response(serializer.data)
+
+
+class APISiteView(OpenAPIView):
+    def get(self, request, *args, **kwargs):
+        site_request = Site.objects.filter()
+        serializer = SiteSerializer(site_request, many=True)
+        return Response(serializer.data)
