@@ -41,9 +41,15 @@ Inicio
                 <div class="modal-content">
                   <h4>{{ site.name }}</h4>
                   <br>
+                    <div class="thumbnail-container">
+                      <div class="thumbnail">
+                          <img src="http://mini.s-shot.ru/1024x768/300/jpeg/?{{ site.url }}" alt="">
+                      </div>
+                    </div>
+                    <br>
                   <p>{{ site.description }}</p>
                     <br>
-                  <a target="_blank" href="{{ site.url }}">Go to site</a>
+                  <h5><a target="_blank" href="{{ site.url }}">Go to site</a></h5>
                 </div>
                 <div class="modal-footer">
                   <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>

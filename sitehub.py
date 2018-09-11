@@ -1,15 +1,12 @@
 from __future__ import unicode_literals
-
-import multiprocessing
-import argparse
-
-import gunicorn.app.base
-
 from gunicorn.six import iteritems
 from sites_hub.wsgi import application
-
 from django.core import management
 
+import gunicorn.app.base
+import multiprocessing
+import argparse
+import sys
 
 def number_of_workers():
     return (multiprocessing.cpu_count() * 2) + 1
@@ -58,6 +55,10 @@ if __name__ == '__main__':
                         help="Flush Database")
 
     args = parser.parse_args()
+
+    if sys.argv.__len__() < 2:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
 
     if args.setup:
         management.call_command('makemigrations')
