@@ -1,0 +1,22 @@
+{
+  "name": "siteshub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/metalerk/SitesHub.git"
+  },
+  "author": "metalerk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/metalerk/SitesHub/issues"
+  },
+  "homepage": "https://github.com/metalerk/SitesHub#readme",
+  "dependencies": {
+    "materialize-css": "^1.0.0"
+  }
+}
