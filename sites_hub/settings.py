@@ -25,7 +25,7 @@ SECRET_KEY = 'wsnrj7#!yynhw%gvx!#j@a(_0o3=rz1+uno46!q5oow51h#$%='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,7 +39,9 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    'sites',
+]
 
 THIRD_PARTY_APPS = []
 
@@ -128,5 +130,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "node_modules/materialize-css/dist"),
+    os.path.join(BASE_DIR, "node_modules"),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, "cdn")
+
+LOGIN_URL = 'admin/'
+LOGOUT_URL = 'admin/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'admin/'
+ADMINS = [('Luis Esteban', 'rodriguezjluis0@gmail.com')]

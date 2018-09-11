@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <script type="text/javascript" src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static 'materialize-css/dist/css/materialize.min.css' %}"  media="screen,projection"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script type="text/javascript" src="{% static 'materialize-css/dist/js/materialize.min.js' %}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/components/icon.min.css" media="screen,projection"/>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <header>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <nav>
+            <div class="nav-wrapper blue darken-1">
+              <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+              <a href="#" class="brand-logo sh-logo">Sites Hub</a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                  {% if not user.is_authenticated %}
+                  <li><a class="modal-trigger sh-item" href="#login">Login</a></li>
+                  {% else %}
+                  {% if user.first_name and user.last_name%}
+                  <li><a class="sh-item">Welcome {{ user.first_name }} {{ user.last_name }}</a></li>
+                  {% else %}
+                  <li><a class="sh-item">Welcome {{ user.username }}</a></li>
+                  {% endif %}
+                  {% if user.is_superuser%}
+                  <li><a class="sh-item" href="{% url 'admin:index' %}">Admin</a></li>
+                  {% endif %}
+                  <li><a class="sh-item" href="/logout">Logout</a></li>
+                  {% endif %}
+              </ul>
+            </div>
+        </nav>
+        <ul id="slide-out" class="sidenav">
+    <li><div class="user-view">
+      <div class="background">
+        <div></div>
+      </div>
+      {% if not user.is_authenticated %}
+      <li><a class="modal-trigger sh-item" href="#login">Login</a></li>
+      {% else %}
+      {% if user.first_name and user.last_name%}
+      <li><a class="sh-item">Welcome {{ user.first_name }} {{ user.last_name }}</a></li>
+      {% else %}
+      <li><a class="sh-item">Welcome {{ user.username }}</a></li>
+      {% endif %}
+      {% if user.is_superuser%}
+      <li><a class="sh-item" href="{% url 'admin:index' %}">Admin</a></li>
+      {% endif %}
+      <li><a class="sh-item" href="/logout">Logout</a></li>
+      {% endif %}
+    </div></li>
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Dev Contact</a></li>
+            <li><a class="waves-effect" target="_blank" href="https://github.com/metalerk/SitesHub"><span class="black-text"><i class="large github icon"></i> GitHub </span></a></li>
+  </ul>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        {% block footer %}{% endblock %}
+    </footer>
+    {% if not user.is_authenticated %}
+    <!-- Modal Structure -->
+      <div id="login" class="modal">
+        <div class="modal-content center">
+          <h4>Login</h4>
+            <br>
+            <form action="/login/" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="input-field col l6 m12 s12">
+                      <input id="username" name="username" type="text" class="validate" required>
+                      <label for="username">Username</label>
+                    </div>
+                    <div class="input-field col l6 m12 s12">
+                      <input id="passwd" name="passwd" type="password" class="validate" required>
+                      <label for="passwd">Password</label>
+                    </div>
+                </div>
+                <div class="row center">
+                  <button class="btn waves-effect waves-light blue darken-4" type="submit" name="action">Login
+                    <i class="material-icons right">send</i>
+                  </button>
+                </div>
+            </form>
+        </div>
+      </div>
+    {% endif %}
+    <script>
+        $(document).ready(function(){
+            $('.modal').modal();
+            $('.sidenav').sidenav();
+         });
+    </script>
+</body>
+</html>

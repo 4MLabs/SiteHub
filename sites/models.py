@@ -1,6 +1,8 @@
 from django.db import models
+from uuid import uuid4
 
 class Category(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=250)
 
     def __str__(self):
@@ -10,6 +12,7 @@ class Category(models.Model):
         ordering = ('name',)
 
 class Site(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     name = models.CharField(max_length=250)
     url = models.URLField(max_length=600)
     category = models.ManyToManyField(Category)
