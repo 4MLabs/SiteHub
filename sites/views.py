@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView, RedirectView
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
@@ -9,13 +10,17 @@ from . models import Site
 
 class IndexView(TemplateView):
     template_name = 'home/home.html'
-    model = Site
-    context_object_name = 'sites'
-    paginate_by = 10
-    queryset = Site.objects.all()
+    queryset = Site.objects.all().order_by('-timestamp')
 
     def get_context_data(self, *args, **kwargs):
         context = super(IndexView, self).get_context_data(*args, **kwargs)
+        paginator = Paginator(self.queryset, 5)
+        page = self.request.GET.get('page')
+        page = page if page is not None else 1
+        sites = paginator.get_page(page)
+        context.update({
+            'sites': sites,
+        })
         return context
 
     def dispatch(self, request, msg=None, *args, **kwargs):

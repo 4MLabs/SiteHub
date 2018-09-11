@@ -12,4 +12,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Site)
 class SiteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'url', 'updated', 'timestamp', )
+    list_display = ('id', 'name', 'url', 'description', 'updated', 'timestamp', )

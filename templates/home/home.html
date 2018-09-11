@@ -7,35 +7,81 @@ Inicio
 {% block content %}
 <br>
 <br>
-<div class="container row">
+<div class="row">
     <div class="col l12 m12 s12 center">
+        {% if user.is_authenticated %}
+        <br>
          <table class="centered striped">
             <thead>
               <tr>
                   <th>Name</th>
-                  <th>Url</th>
-                  <th>Item Price</th>
+                  <!-- <th>Url</th> -->
+                  <th>Category</th>
+                  <th>Updated</th>
               </tr>
             </thead>
 
             <tbody>
+            {% for site in sites %}
               <tr>
-                <td>Alvin</td>
-                <td>Eclair</td>
-                <td>$0.87</td>
+                <td><a class="modal-trigger" href="#{{ site.id }}">{{ site.name }}</a></td>
+                <!-- <td><a target="_blank" href="{{ site.url }}">{{ site.url }}</a></td> -->
+                <td>
+                    {% if site.category.all %}
+                        {% for category in site.category.all %}
+                            {{ category.name.capitalize }},
+                        {% endfor %}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                  <td>{{ site.updated|date:'Y-m-d H:i' }}</td>
               </tr>
-              <tr>
-                <td>Alan</td>
-                <td>Jellybean</td>
-                <td>$3.76</td>
-              </tr>
-              <tr>
-                <td>Jonathan</td>
-                <td>Lollipop</td>
-                <td>$7.00</td>
-              </tr>
+            <div id="{{ site.id }}" class="modal">
+                <div class="modal-content">
+                  <h4>{{ site.name }}</h4>
+                  <br>
+                  <p>{{ site.description }}</p>
+                    <br>
+                  <a target="_blank" href="{{ site.url }}">Go to site</a>
+                </div>
+                <div class="modal-footer">
+                  <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                </div>
+              </div>
+            {% endfor %}
             </tbody>
           </table>
+        <br>
+        <br>
+          <ul class="pagination">
+		 	{% if sites.has_previous %}
+		        <li><a href="?page={{ sites.previous_page_number }}"><i class="material-icons">chevron_left</i></a></li>
+		    {% else %}
+		        <li class="disabled"><a href=""><i class="material-icons">chevron_left</i></a></li>
+		    {% endif %}
+		    {% for i in sites.paginator.page_range %}
+		        {% if sites.number == i %}
+		            <li class="active blue grey-darken-1"><a href="?page={{ i }}">{{ i }}</a></li>
+		        {% else %}
+		            <li class="waves-effect"><a href="?page={{ i }}">{{ i }}</a></li>
+		        {% endif %}
+            {% endfor %}
+		    {% if sites.has_next %}
+		    	<li class="waves-effect"><a href="?page={{ sites.next_page_number }}"><i class="material-icons">chevron_right</i></a></li>
+		    {% else %}
+		    	<li class="disabled"><a href=""><i class="material-icons">chevron_right</i></a></li>
+		    {% endif %}
+		  </ul>
+        Page {{ sites.number }} of {{ sites.paginator.num_pages }}
+        {% else %}
+        <h1>SiteHub is running properly!</h1>
+        <br>
+        <h3>Store your favorite sites</h3>
+        <br>
+        <h4>Visit us at</h4>
+        <h5><a class="waves-effect" target="_blank" href="https://github.com/metalerk/SiteHub"><span class="black-text"><i class="large github icon"></i> GitHub </span></a></h5>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
