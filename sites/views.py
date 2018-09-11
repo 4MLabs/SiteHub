@@ -30,7 +30,7 @@ class IndexView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(IndexView, self).get_context_data(*args, **kwargs)
-        paginator = Paginator(self.queryset, 5)
+        paginator = Paginator(self.queryset, 2)
         page = self.request.GET.get('page')
         page = page if page is not None else 1
         sites = paginator.get_page(page)
